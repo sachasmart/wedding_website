@@ -1,0 +1,23 @@
+# Build files
+api/dist
+
+# Docker database
+sql/volumes
+
+# Dependency directories
+api/node_modules
+web/node_modules
+
+# dotenv environment variables file
+.env
+
+# OS-specific files
+.DS_Store
+
+# Logs
+logs
+*.log
+
+# Optional cache directories
+.npm
+.eslintcache
