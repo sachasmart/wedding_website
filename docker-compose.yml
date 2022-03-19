@@ -1,50 +1,22 @@
-version: '3.8'
-
+version: "3.8"
 services:
-  smart-api:
-    container_name: smart-api
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-      target: base
-    depends_on:
-      - smart-db
-    entrypoint: '/bin/sh /home/node/smart-api/bootstrap.sh'
-    environment:
-      NODE_ENV: ${NODE_ENV:-development}
-      PORT: ${API_PORT}
-      DATABASE_URL: 'postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}'
-    env_file:
-      - api/.env
-    volumes:
-      - './api:/home/node/smart-api'
-    ports:
-      - '${API_PORT}:${API_PORT}'
-    networks:
-      - smart_network
-
-  smart-db:
-    container_name: smart-db
-    image: postgres:13.4-alpine
-    environment:
-      POSTGRES_DATABASE: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - '${DB_PORT}:5432'
-    healthcheck:
-      test: "PGPASSWORD=${DB_PASSWORD} -h localhost -U bnd -c '\\l'"
-      interval: 3s
-      timeout: 3s
-      retries: 3
-    volumes:
-      - './sql/volumes/default:/var/lib/postgresql/data'
-    networks:
-      - smart_network
-
-volumes:
-  default:
-
-networks:
-  smart_network:
-    driver: bridge
+    api:
+        build:
+            dockerfile: Dockerfile
+            context: .
+        depends_on: 
+            - postgres
+        environment: 
+            DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@postgres:5432/db
+            NODE_ENV: development
+            PORT: 3000
+        ports:
+            - "8085:3000"
+    postgres:
+        image: postgres:10.4
+        ports:
+            - "35000:5432"
+        environment: 
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: db
