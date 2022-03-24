@@ -13,23 +13,23 @@ services:
         ports:
             - "8085:3000"
     postgres:
-        image: postgres:10.4
+        image: postgres:latest
         ports:
             - "35000:5432"
         environment: 
             POSTGRES_USER: ${DB_USER}
             POSTGRES_PASSWORD: ${DB_PASSWORD}
             POSTGRES_DB: db
-    web:
-        build:
-            dockerfile: Dockerfile
-            context: ./web
-            target: development
-        command: npm run start
-        volumes:
-            - ./web:/sacha/web/src/app
-            - /sacha/web/src/app/node_modules
-        ports:
-            - 4200:4200
-        links:
-            - api
+    # web:
+    #     build:
+    #         dockerfile: Dockerfile
+    #         context: ./web
+    #         target: development
+    #     command: npm run start
+    #     volumes:
+    #         - ./web:/sacha/web/src/app
+    #         - /sacha/web/src/app/node_modules
+    #     ports:
+    #         - 4200:4200
+    #     links:
+    #         - api

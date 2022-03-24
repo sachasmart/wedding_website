@@ -1,21 +1,23 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class UserEntity {
 
-    @PrimaryGeneratedColumn()
-    id: string;
+    @PrimaryGeneratedColumn("uuid", { name: "account_id" })
+    id!: number;
 
-    @Column()
-    name: string;
+    @CreateDateColumn({ name: "created_at", type: "timestamp" })
+    createdAt!: Date;
 
-    // @Column({type: 'string', default: ""})
-    // phoneNumber: string;
+    @Column("text", { name: "name" })
+    name!: string;
 
-    // @Column({type: 'string', default: ""})
-    // email: string;
+    @Column("text", { unique: true, name: "email" })
+    email!: string;
 
-    // @Column({ type: 'boolean', default: true })
-    // rsvp: boolean;
+    @Column("text", { unique: true, name: "phoneNumber" })
+    phoneNumber!: string;
 
+    @Column("boolean", { name: "rsvp" })
+    rsvp!: boolean;
 }
